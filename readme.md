@@ -4,4 +4,6 @@
 
 #### Player Salaries = "https://www.spotrac.com/nba/rankings/player/_/year/{year}/sort/cash_total"
 
+#### Team Salaries -  https://hoopshype.com/salaries/players/1991-1992/
+
 
