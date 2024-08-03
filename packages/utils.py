@@ -75,6 +75,41 @@ def extract_team_info(html_content, year:int)->pd.DataFrame:
                     df.append(teams)
     
     master_df= pd.DataFrame(df)
+    
+    nba_team_abbreivated = {
+  "Atlanta":"ATL",
+  "Cleveland": "CLE",
+  "New York": "NYK",
+  "Charlotte": "CHA",
+  "Detroit": "DET",
+  "Dallas": "DAL",
+  "Philadelphia": "PHI",
+  "Milwaukee": "MIL",
+  "Phoenix":"PHX",
+  "Brooklyn":"BKN",
+  "Boston":"BOS",
+  "Portland":"POR",
+  "Golden State":"GSW",
+  "San Antonio":"SAS",
+  "Indiana":"IND",
+  "Utah":"UT",
+  "Oklahoma City":"OKC",
+  "Houston":"HOU",
+  "Denver":"DEN",
+  "LA Clippers":"LAC",
+  "Chicago":"CHI",
+  "Washington":"WAS",
+  "Sacramento":"SAC",
+  "Miami":"MIA",
+  "Minnesota":"MIN",
+  "Orlando":"ORL",
+  "New Orleans":"NOP",
+  "Memphis":"MEM",
+  "Toronto":"TOR",
+  "LA Lakers":"LAL"
+}
+    
+    master_df["Team"] = master_df["Team"].apply(lambda x: nba_team_abbreivated[x])
     master_df["season"] = year
     return master_df
 
