@@ -11,7 +11,7 @@ def extract_player_salaries(html_content, year:int)->pd.DataFrame:
         year (int): Year
 
     Returns:
-        _type_: _description_
+        _type_: Pandas Dataframe
     """
     soup = BeautifulSoup(html_content, 'html.parser')
     player_data = []
@@ -51,7 +51,7 @@ def extract_team_info(html_content, year:int)->pd.DataFrame:
         year (_type_): Integer
 
     Returns:
-        A datafrom with all information
+        Pandas Dataframe
     """
     soup = BeautifulSoup(html_content, 'html.parser')
     tds = soup.findAll("td")
@@ -77,3 +77,38 @@ def extract_team_info(html_content, year:int)->pd.DataFrame:
     master_df= pd.DataFrame(df)
     master_df["season"] = year
     return master_df
+
+def extract_nba_stats(html_content, year:int)->pd.DataFrame:
+  """
+  Extracts Player Statistical Information
+
+  Args:
+      html_content (_type_): HTML Content
+      year (_type_): Integer
+
+  Returns:
+      _type_: Pandas Dataframe
+  """
+  
+  soup = BeautifulSoup(html_content, 'html.parser')
+  master_df = []
+  tds = soup.find_all("td")
+  player_stats = [td.text.strip() for td in tds]
+  player_columns = ["Rank", "Name", "Team", "GP", "MPG", "PPG", "FGM", "FGA", "FG%", "3PM", "3PA", "3P%", "FTM", "FTA", "FT%", "ORB", "DRB", "RPG", "APG", "SPG", "BPG", "TOV", "PF"]
+
+  count = 0
+  player_dict = {}
+  for idx, player_stat in enumerate(player_stats):
+    
+    if count == 22:
+      master_df.append(player_dict)
+      player_dict = {}
+      count = 0
+    else:
+      col = player_columns[count]
+      player_dict[col] = player_stat
+      count +=1
+  
+  df = pd.DataFrame(master_df)
+  df["season"] = str(year-1) +'-'+ str(year)
+  return df
