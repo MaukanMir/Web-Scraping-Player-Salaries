@@ -112,3 +112,19 @@ def extract_nba_stats(html_content, year:int)->pd.DataFrame:
   df = pd.DataFrame(master_df)
   df["season"] = str(year-1) +'-'+ str(year)
   return df
+
+def load_into_db(df:pd.DataFrame, engine, table:str):
+  """
+  Loads Pandas Dataframe into DB
+
+  Args:
+      df (pd.DataFrame): Dataframe
+      engine (_type_): SQL Engine
+      table (str): STR of Table Name
+  """
+  
+  try:
+      df.to_sql(table, engine, if_exists='replace', index=False)
+      print("Data successfully written to the database.")
+  except Exception as e:
+      print(f"Database operation failed. Error: {e}")
