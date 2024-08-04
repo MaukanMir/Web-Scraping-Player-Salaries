@@ -1,3 +1,5 @@
+
+
 CREATE TABLE salaries_and_stats AS
 SELECT 
     salaries.salary,
