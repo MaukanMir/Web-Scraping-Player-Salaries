@@ -184,15 +184,18 @@ def grab_all_salaries(html_content, year:str):
   for block in cleaned_list:
     players = {}
     for idx, player in enumerate(block):
-      if "$" in player and "$" in block[idx-1]:
-        continue
-      elif "$" in player and block[idx-1].isalpha():
-        players["salary"] = int(player.replace(",", "").replace("$", ""))
-      elif idx ==2 and player.isalpha():
-        players["name"] = block[idx-2]+ " " +  block[idx-1] + " " + player
-      elif player.isalpha() and block[idx-1].isalpha() and "$" in block[idx+1]:
-        players["name"] = block[idx-1] + " " + player
-        df.append(players)
+      try:
+        if "$" in player and "$" in block[idx-1]:
+          continue
+        elif "$" in player and block[idx-1].isalpha():
+          players["salary"] = int(player.replace(",", "").replace("$", ""))
+        elif idx ==2 and player.isalpha():
+          players["name"] = block[idx-2]+ " " +  block[idx-1] + " " + player
+        elif player.isalpha() and block[idx-1].isalpha() and "$" in block[idx+1]:
+          players["name"] = block[idx-1] + " " + player
+          df.append(players)
+      except Exception as e:
+        print(e, block)
 
   df = pd.DataFrame(df)
   df["season"] = year
