@@ -163,3 +163,37 @@ def load_into_db(df:pd.DataFrame, engine, table:str):
       print("Data successfully written to the database.")
   except Exception as e:
       print(f"Database operation failed. Error: {e}")
+
+def grab_all_salaries(html_content, year:str):
+  """_summary_
+
+  Args:
+      response (_type_): HTML content
+      year (str): _description_
+
+  Returns:
+      _type_: _description_
+  """
+
+  soup = BeautifulSoup(html_content, "html.parser")
+  tds = soup.findAll("td")
+
+  mega_string = " ".join([td.text.strip() for td in tds][1:])
+  cleaned_list = [block.strip().split(" ") for block in mega_string.split(".")[1:]]
+  df = []
+  for block in cleaned_list:
+    players = {}
+    for idx, player in enumerate(block):
+      if "$" in player and "$" in block[idx-1]:
+        continue
+      elif "$" in player and block[idx-1].isalpha():
+        players["salary"] = int(player.replace(",", "").replace("$", ""))
+      elif idx ==2 and player.isalpha():
+        players["name"] = block[idx-2]+ " " +  block[idx-1] + " " + player
+      elif player.isalpha() and block[idx-1].isalpha() and "$" in block[idx+1]:
+        players["name"] = block[idx-1] + " " + player
+        df.append(players)
+
+  df = pd.DataFrame(df)
+  df["season"] = year
+  return df
