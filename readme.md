@@ -6,6 +6,6 @@
 
 #### Team Salaries -  https://hoopshype.com/salaries/players/1991-1992/
 
-#### Heights and Weights
+#### Heights and Weights https://basketball.realgm.com/nba/players
 
 
