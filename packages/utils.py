@@ -233,7 +233,7 @@ def grab_heights_weights(html_content, year)->pd.DataFrame:
   numeric_cols  = ["weight", "age", "gp", "yos"]
   df = pd.DataFrame(df)
   for col in numeric_cols:
-    df[col] = df[col].apply(int)
+    df[col] = df[col].apply(lambda x: int(x) if x.isnumeric() else 0)
 
-  df["season"] = str(int(year)) + "-" + str(int(year+1))
+  df["season"] = str(int(year)) + "-" + str(int(year)+1)
   return df
