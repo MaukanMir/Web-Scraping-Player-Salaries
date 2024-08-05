@@ -200,3 +200,39 @@ def grab_all_salaries(html_content, year:str):
   df = pd.DataFrame(df)
   df["season"] = year
   return df
+
+def grab_heights_weights(html_content, year)->pd.DataFrame:
+  """
+  Grab all the heights and weights of NBA Players
+
+  Args:
+      html_content (_type_): content
+      year (_type_): Year
+
+  Returns:
+      _type_: Pandas DataFrame
+  """
+  soup = BeautifulSoup(html_content, "html.parser")
+  tds = [td.text for td in soup.find_all("td")]
+  columns = ["name", "pos","height", "weight", "age", "team", "gp","yos", "college-team", "draft-status", "nationality"]
+
+  df = []
+  players = {}
+  count = 0
+  for value in tds:
+    if count <11:
+      if columns[count] == "team":
+        value = value.split(",")[-1] if "," in value else value
+      players[columns[count]] = value
+      count +=1
+      if count == 11:
+        count =0
+        df.append(players)
+        players={}
+
+  numeric_cols  = ["weight", "age", "gp", "yos"]
+  df = pd.DataFrame(df)
+  for col in numeric_cols:
+    df[col] = df[col].apply(int)
+
+  return df
