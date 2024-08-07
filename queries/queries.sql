@@ -36,7 +36,7 @@ AND
 
 
 
--- Highest percentile
+-- Highest percentile Scorers with Heights N Weights
 
 SELECT
 
@@ -51,3 +51,16 @@ stats.season
 from salaries_stats_heights as stats
 
 where stats."PPG" >=30
+
+-- Player Stats going back to 1970
+
+SELECT
+
+stats."Name",
+stats."PPG",
+PERCENT_RANK() OVER ( order by stats."PPG" DESC) as ranking,
+stats.season
+
+from player_stats as stats
+
+where stats."PPG" >= 29.5
