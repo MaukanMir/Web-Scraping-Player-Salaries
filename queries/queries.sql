@@ -64,3 +64,17 @@ stats.season
 from player_stats as stats
 
 where stats."PPG" >= 29.5
+
+
+-- Selecting for Top Scorers in last 9 seasons
+
+SELECT
+
+stats."Name",
+stats."PPG",
+PERCENT_RANK() OVER ( order by stats."PPG" DESC) as ranking,
+stats.season
+
+from player_stats as stats
+
+where stats."PPG" >= 29.5 and Substring(stats.season, 1, 4)::int >= 2015
