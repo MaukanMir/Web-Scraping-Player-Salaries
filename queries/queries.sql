@@ -33,3 +33,21 @@ ON
     stats."Name" = players.name
 AND 
     stats.season = players.season;
+
+
+
+-- Highest percentile
+
+SELECT
+
+stats."Name",
+stats."PPG",
+PERCENT_RANK() OVER ( order by stats."PPG" DESC) as ranking,
+stats.height,
+stats.weight,
+stats.salary,
+stats.season
+
+from salaries_stats_heights as stats
+
+where stats."PPG" >=30
